@@ -5,8 +5,15 @@ public class Cache {
     Cache(int blockSize, int cacheSize, Boolean writeBack, Boolean direct, Boolean fully, int setSize, Boolean allocate, Boolean split) {
        int index = log2(cacheSize);
        int offset = log2(blockSize);
-       int set = log2(setSize);
-       int tag = 32-index-set-offset;
+       int set = cacheSize/setSize;
+       int tag = 32-offset;
+       if (setSize>0){
+           tag-=set;
+       }
+       else{
+           tag-=index;
+       }
+       
     }
 
     void write(Boolean isWriteAllocate, Boolean isWriteBack){    
