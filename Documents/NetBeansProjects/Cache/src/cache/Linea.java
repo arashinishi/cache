@@ -8,7 +8,7 @@ public class Linea {
     private int tagSize;
     public int[] linea;
     
-    public Linea(boolean isDirect, boolean isFully, int set, int blockSize, int cacheSize)
+    public Linea(int set, int blockSize, int cacheSize)
     {
         /* funciona igual para todos los casos*/
         this.offsetSize = Cache.log2(blockSize);
