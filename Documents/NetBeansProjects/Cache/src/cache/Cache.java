@@ -3,14 +3,14 @@ package cache;
 public class Cache {
 
     public Cache(int bs, int cs) {
-        int index = log2(cs);
-        int offset= log2(bs);
-        int tag=32-index-offset;
+        
     }
 
-    
-            
-
+    Cache(int blockSize, int cacheSize, Boolean writeBack, Boolean direct, Boolean fully, int set, Boolean allocate, Boolean split) {
+       int index = log2(cacheSize);
+        int offset= log2(blockSize);
+        int tag=32-index-offset;
+    }
 
     void write(Boolean isWriteAllocate, Boolean isWriteBack){    
     }
