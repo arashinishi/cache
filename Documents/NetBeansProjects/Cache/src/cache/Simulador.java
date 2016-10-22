@@ -1,5 +1,7 @@
 package cache;
 
+import java.util.Scanner;
+
 public class Simulador {
 
     public static void main(String[] args) {
@@ -41,6 +43,41 @@ public class Simulador {
         }
         //Crear cache
         new Cache(blockSize, cacheSize, isWriteBack, isDirect, isFully, set, isAllocate, isSplit);
+        
+        //Leer entradas
+        
+        Scanner scanner = new Scanner(System.in);
+        String entrada = null;
+        int t = -1;
+        String address = null;
+        
+        
+        do
+        {
+            entrada = null;
+            entrada = scanner.nextLine();
+            String [] cmd = entrada.split(" ");
+            
+            try
+            {
+                t = Integer.parseInt(cmd[0]);
+                if((t <0) || (t > 2))
+                {
+                    System.out.println("Wrong type of access");
+                    System.exit(1);
+                }
+            }
+            catch(NumberFormatException ex)
+            {
+                System.out.println(ex);
+                System.exit(1);
+            }
+            
+            address = cmd[1];
+            
+            System.out.println("T : " + t + " Address : " + address);
+        }
+        while(scanner.hasNext());
         
         
     }
