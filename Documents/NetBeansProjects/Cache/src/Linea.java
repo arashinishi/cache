@@ -1,5 +1,3 @@
-package cache;
-
 public class Linea {
     
     private int size;

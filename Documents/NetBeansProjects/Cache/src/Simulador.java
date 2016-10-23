@@ -1,5 +1,3 @@
-package cache;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -77,9 +75,8 @@ public class Simulador {
             }
             
             //Lee el archivo desde los argumentos
-            try{
-                File f = new File(args[args.length-1]);                
-                trace = new Scanner(new FileReader(f));
+            try{           
+                trace = new Scanner(new File(args[args.length-1]));
             }
             catch(Exception e){
                 System.out.println("Error: Invalid file");
@@ -124,6 +121,7 @@ public class Simulador {
                 System.exit(1);
             }
             
+            //Convertir el address de hexadecimal a binario para utilizarlo en el cache
             hexaddress = cmd[1];
             String address = new BigInteger(hexaddress, 16).toString(2);
             String.format("%32s", address).replace(" ", "0");

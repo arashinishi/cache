@@ -1,5 +1,3 @@
-package cache;
-
 public class Cache {
 
     Cache(int blockSize, int cacheSize, Boolean writeBack, Boolean direct, Boolean fully, int setSize, Boolean allocate, Boolean split) {
