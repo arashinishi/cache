@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.math.BigInteger;
 import java.util.Scanner;
 
@@ -123,9 +121,20 @@ public class Simulador {
             
             //Convertir el address de hexadecimal a binario para utilizarlo en el cache
             hexaddress = cmd[1];
-            String address = new BigInteger(hexaddress, 16).toString(2);
-            String.format("%32s", address).replace(" ", "0");
+            if(hexaddress.length()>8){
+                hexaddress = hexaddress.substring(0,8);
+            }
+            else if(hexaddress.length()<8){
+                while(hexaddress.length()<8){
+                hexaddress = hexaddress.concat("0");
+                }
+            }
             
+            String address = new BigInteger(hexaddress, 16).toString(2);
+            address = String.format("%32s", address).replace(" ", "0");
+            
+            //Hacer funcionar el cache aqui...
+                
             System.out.println("T : " + t + " Address : " + address);
         }
         while(trace.hasNext());
