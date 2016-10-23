@@ -14,40 +14,40 @@ public class Simulador {
         Boolean isSplit = false;     
         
         if(args.length>0){
-            for (int i = 0 ; i <(args.length-1); i++){
-                System.out.println(args[i]);
-                if (args[i]=="-bs"){
-                    blockSize = Integer.parseInt(args[i+1]);
-                    ++i;
+            int i;
+            for (i = 0 ; i <(args.length-1); i++){                
+                if (args[i].compareTo("-bs") == 0){
+                    blockSize = Integer.parseInt(args[i+1]);                    
+                    i++;
                 }
                 
-                else if (args[i]=="-cs"){
+                else if (args[i].compareTo("-cs") == 0){
                     cacheSize = Integer.parseInt(args[i+1]);
-                    ++i;
+                    i++;
                 }
                 
-                else if (args[i]=="-wt"){
+                else if (args[i].compareTo("-wt") == 0){
                     isWriteBack = false;
                 }
                 
-                else if (args[i]=="-fa"){
+                else if (args[i].compareTo("-fa") == 0){
                     if (set>0) throw new IllegalArgumentException();
                     isFully = true;
                     isDirect = false;
                 }
                 
-                else if (args[i]=="-sa"){
+                else if (args[i].compareTo("-sa") == 0){
                     if (isFully) throw new IllegalArgumentException();
                     set = Integer.parseInt(args[i+1]);
                     i++;
                     isDirect = false;
                 }
                 
-                else if (args[i]=="-wna"){
+                else if (args[i].compareTo("-wna") == 0){
                     isAllocate = false;
                 }
                 
-                else if (args[i]=="-split"){
+                else if (args[i].compareTo("-split") == 0){
                     isSplit = true;
                 }
                 
