@@ -1,5 +1,6 @@
 package cache;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class Simulador {
@@ -12,35 +13,55 @@ public class Simulador {
         Boolean isAllocate = true;
         Boolean isSplit = false;     
         
-        
-        for (int i = 0 ; i <(args.length); i++){
-            switch (args[i]){
-                case "-bs":
+        if(args.length>0){
+            for (int i = 0 ; i <(args.length-1); i++){
+                System.out.println(args[i]);
+                if (args[i]=="-bs"){
                     blockSize = Integer.parseInt(args[i+1]);
-                    i++;
-                case "-cs":
+                    ++i;
+                }
+                
+                else if (args[i]=="-cs"){
                     cacheSize = Integer.parseInt(args[i+1]);
-                    i++;
-                case "-wt":
+                    ++i;
+                }
+                
+                else if (args[i]=="-wt"){
                     isWriteBack = false;
-                case "-fa":
+                }
+                
+                else if (args[i]=="-fa"){
                     if (set>0) throw new IllegalArgumentException();
                     isFully = true;
                     isDirect = false;
-                case "-sa":
+                }
+                
+                else if (args[i]=="-sa"){
                     if (isFully) throw new IllegalArgumentException();
                     set = Integer.parseInt(args[i+1]);
                     i++;
                     isDirect = false;
-                case "-wna":
+                }
+                
+                else if (args[i]=="-wna"){
                     isAllocate = false;
-                case "-split":
+                }
+                
+                else if (args[i]=="-split"){
                     isSplit = true;
-                default:
+                }
+                
+                else
                     throw new IllegalArgumentException();
-                        
-            }          
+
+                         
+            }
+            System.out.println(args[args.length-1]);
+            File trace = new File(args[args.length-1]);
         }
+        else
+            System.out.println("You need to provide arguments");
+        
         //Crear cache
         new Cache(blockSize, cacheSize, isWriteBack, isDirect, isFully, set, isAllocate, isSplit);
         
