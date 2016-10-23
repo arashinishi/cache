@@ -1,6 +1,9 @@
 package cache;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.math.BigInteger;
 import java.util.Scanner;
 
 public class Simulador {
@@ -12,17 +15,26 @@ public class Simulador {
         Boolean isFully = false;
         Boolean isAllocate = true;
         Boolean isSplit = false;     
+        Scanner trace = null;
         
         if(args.length>0){
             int i;
             for (i = 0 ; i <(args.length-1); i++){                
                 if (args[i].compareTo("-bs") == 0){
-                    blockSize = Integer.parseInt(args[i+1]);                    
+                    try{
+                        blockSize = Integer.parseInt(args[i+1]); 
+                    }catch(Exception e){
+                        System.out.println("Error: The argument after -bs must be a number");
+                    }                                       
                     i++;
                 }
                 
                 else if (args[i].compareTo("-cs") == 0){
-                    cacheSize = Integer.parseInt(args[i+1]);
+                    try{
+                        cacheSize = Integer.parseInt(args[i+1]); 
+                    }catch(Exception e){
+                        System.out.println("Error: The argument after -cs must be a number");
+                    }
                     i++;
                 }
                 
@@ -31,13 +43,19 @@ public class Simulador {
                 }
                 
                 else if (args[i].compareTo("-fa") == 0){
-                    if (set>0) throw new IllegalArgumentException();
+                    if (set>0){
+                        System.out.println("Error: The cache can't be FullyAssociative and SetAssociative at the same time");
+                        System.exit(1);
+                    }
                     isFully = true;
                     isDirect = false;
                 }
                 
                 else if (args[i].compareTo("-sa") == 0){
-                    if (isFully) throw new IllegalArgumentException();
+                    if (isFully){
+                        System.out.println("Error: The cache can't be FullyAssociative and SetAssociative at the same time");
+                        System.exit(1);
+                    }
                     set = Integer.parseInt(args[i+1]);
                     i++;
                     isDirect = false;
@@ -51,32 +69,44 @@ public class Simulador {
                     isSplit = true;
                 }
                 
-                else
-                    throw new IllegalArgumentException();
-
-                         
+                else{
+                    System.out.println("Error: Invalid argument");
+                    System.exit(1);
+                }  
+                
             }
-            System.out.println(args[args.length-1]);
-            File trace = new File(args[args.length-1]);
+            
+            //Lee el archivo desde los argumentos
+            try{
+                File f = new File(args[args.length-1]);                
+                trace = new Scanner(new FileReader(f));
+            }
+            catch(Exception e){
+                System.out.println("Error: Invalid file");
+                System.exit(1);
+            }
+            
         }
-        else
-            System.out.println("You need to provide arguments");
+        
+        else{
+            System.out.println("Error: You need to provide arguments");
+            System.exit(1);
+        }
         
         //Crear cache
-        new Cache(blockSize, cacheSize, isWriteBack, isDirect, isFully, set, isAllocate, isSplit);
+        Cache cache;
+        cache = new Cache(blockSize, cacheSize, isWriteBack, isDirect, isFully, set, isAllocate, isSplit);
         
         //Leer entradas
-        
-        Scanner scanner = new Scanner(System.in);
         String entrada = null;
         int t = -1;
-        String address = null;
+        String hexaddress = null;
         
         
         do
         {
             entrada = null;
-            entrada = scanner.nextLine();
+            entrada = trace.nextLine();
             String [] cmd = entrada.split(" ");
             
             try
@@ -84,7 +114,7 @@ public class Simulador {
                 t = Integer.parseInt(cmd[0]);
                 if((t <0) || (t > 2))
                 {
-                    System.out.println("Wrong type of access");
+                    System.out.println("Error: Wrong type of access");
                     System.exit(1);
                 }
             }
@@ -94,11 +124,13 @@ public class Simulador {
                 System.exit(1);
             }
             
-            address = cmd[1];
+            hexaddress = cmd[1];
+            String address = new BigInteger(hexaddress, 16).toString(2);
+            String.format("%32s", address).replace(" ", "0");
             
             System.out.println("T : " + t + " Address : " + address);
         }
-        while(scanner.hasNext());
+        while(trace.hasNext());
         
         
     }
