@@ -12,6 +12,16 @@ public class Linea {
         this.dirty = false;
         this.blockSize = blockSize;
         this.tagSize = tag;
-
+    }
+    
+    public void write(String tag, String offset, int t){
+        switch (t) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
     }
 }
