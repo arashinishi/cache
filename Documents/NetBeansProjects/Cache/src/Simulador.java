@@ -124,11 +124,6 @@ public class Simulador {
             if(hexaddress.length()>8){
                 hexaddress = hexaddress.substring(0,8);
             }
-            else if(hexaddress.length()<8){
-                while(hexaddress.length()<8){
-                hexaddress = hexaddress.concat("0");
-                }
-            }
             
             String address = new BigInteger(hexaddress, 16).toString(2);
             address = String.format("%32s", address).replace(" ", "0");

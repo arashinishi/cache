@@ -1,19 +1,17 @@
 public class Linea {
-    
-    private int size;
-    private int offsetSize;
-    private int indexSize;
+    private Boolean valid;
+    private Boolean dirty;
+    private int blockSize;
     private int tagSize;
-    public int[] linea;
+    private String tag;
     
-    public Linea(int set, int blockSize, int cacheSize)
+    public Linea(int blockSize, int tag)
     {
         /* funciona igual para todos los casos*/
-        this.offsetSize = Cache.log2(blockSize);
-        this.indexSize = Cache.log2(cacheSize);
-        this.tagSize = 32 - this.indexSize - set - this.offsetSize;
-        this.size = this.offsetSize + this.indexSize + this.tagSize;
+        this.valid = false;
+        this.dirty = false;
+        this.blockSize = blockSize;
+        this.tagSize = tag;
 
-        this.linea = new int[size];
     }
 }
