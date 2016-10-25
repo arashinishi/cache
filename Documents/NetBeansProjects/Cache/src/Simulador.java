@@ -77,8 +77,8 @@ public class Simulador {
                 trace = new Scanner(new File(args[args.length-1]));
             }
             catch(Exception e){
-                System.out.println("Error: Invalid file");
-                System.exit(1);
+                //System.out.println("Error: Invalid file");
+                //System.exit(1);
             }
             
         }

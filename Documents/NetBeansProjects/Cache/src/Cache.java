@@ -4,6 +4,7 @@ public class Cache {
     private int set;
     private int tag;
     private Linea[] lineas;
+    private Linea[][] setLineas;
 
     public Cache(int blockSize, int cacheSize, Boolean writeBack, Boolean direct, Boolean fully, int setSize, Boolean allocate, Boolean split) {
         //Comprobar si se especificó el block size y cache size
@@ -25,8 +26,9 @@ public class Cache {
         this.offset = log2(blockSize);
         
         this.set=0;       
-        if (setSize>0)
+        if (setSize>0){
             this.set = cacheSize/setSize;
+        }
        
         this.tag = 32-offset;
         if (setSize>0){
@@ -38,6 +40,16 @@ public class Cache {
         
         this.lineas = new Linea[cacheSize];
         
+        //setLineas[set][lineas del set]
+        if(setSize>0){
+            int k=0;
+            for (int i=0; i<(cacheSize/set); i++){
+                for (int j=0; j<set ; j++){
+                    setLineas[i][j] = lineas[k];
+                    k++;
+                }
+            }
+        }
        
     }
 
@@ -47,9 +59,9 @@ public class Cache {
     void read(){
     }
     
-    public static int log2(int n){
+    private int log2(int n){
         if(n <= 0) throw new IllegalArgumentException();
-        return 31 - Integer.numberOfLeadingZeros(n);
+        return (int) Math.ceil((Math.log(n)/Math.log(2)));
     }
     
     
