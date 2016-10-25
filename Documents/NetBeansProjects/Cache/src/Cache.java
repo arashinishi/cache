@@ -6,7 +6,7 @@ public class Cache {
     private Linea[] lineas;
     private Linea[][] setLineas;
 
-    public Cache(int blockSize, int cacheSize, Boolean writeBack, Boolean direct, Boolean fully, int setSize, Boolean allocate, Boolean split) {
+    public Cache(int blockSize, int cacheSize, Boolean direct, Boolean fully, int setSize, Boolean split) {
         //Comprobar si se especificó el block size y cache size
         if (blockSize == 0 && cacheSize == 0){
             System.out.println("Error: Block Size and Cache Size not especified");
@@ -32,10 +32,10 @@ public class Cache {
        
         this.tag = 32-offset;
         if (setSize>0){
-            this.tag-=set;
+            this.tag -= this.set;
         }
         else{
-            this.tag-=index;
+            this.tag -= this.index;
         }
         
         this.lineas = new Linea[cacheSize];
@@ -43,25 +43,23 @@ public class Cache {
         //setLineas[set][lineas del set]
         if(setSize>0){
             int k=0;
-            for (int i=0; i<(cacheSize/set); i++){
-                for (int j=0; j<set ; j++){
-                    setLineas[i][j] = lineas[k];
+            for (int i=0; i<(cacheSize/this.set); i++){
+                for (int j=0; j<this.set ; j++){
+                    this.setLineas[i][j] = this.lineas[k];
                     k++;
                 }
             }
         }
        
     }
-
-    void write(Boolean isWriteAllocate, Boolean isWriteBack){    
-    }
-    
-    void read(){
-    }
     
     private int log2(int n){
         if(n <= 0) throw new IllegalArgumentException();
         return (int) Math.ceil((Math.log(n)/Math.log(2)));
+    }
+
+    public void write(int t, String address, Boolean writeBack, Boolean allocate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

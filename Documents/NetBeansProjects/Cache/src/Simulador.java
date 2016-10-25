@@ -12,6 +12,7 @@ public class Simulador {
         Boolean isAllocate = true;
         Boolean isSplit = false;     
         Scanner trace = null;
+        Cache cache;
         
         if(args.length>0){
             int i;
@@ -77,8 +78,8 @@ public class Simulador {
                 trace = new Scanner(new File(args[args.length-1]));
             }
             catch(Exception e){
-                //System.out.println("Error: Invalid file");
-                //System.exit(1);
+                System.out.println("Error: Invalid file");
+                System.exit(1);
             }
             
         }
@@ -89,8 +90,7 @@ public class Simulador {
         }
         
         //Crear cache
-        Cache cache;
-        cache = new Cache(blockSize, cacheSize, isWriteBack, isDirect, isFully, set, isAllocate, isSplit);
+        cache = new Cache(blockSize, cacheSize, isDirect, isFully, set, isSplit);
         
         //Leer entradas
         String entrada = null;
@@ -129,7 +129,8 @@ public class Simulador {
             address = String.format("%32s", address).replace(" ", "0");
             
             //Hacer funcionar el cache aqui...
-                
+            cache.write(t,address, isWriteBack, isAllocate);
+                     
             System.out.println("T : " + t + " Address : " + address);
         }
         while(trace.hasNext());
