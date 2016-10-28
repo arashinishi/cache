@@ -4,6 +4,18 @@ public class Linea {
     private int blockSize;
     private int tagSize;
     private String tag;
+
+    public Boolean getValid() {
+        return valid;
+    }
+
+    public Boolean getDirty() {
+        return dirty;
+    }
+
+    public String getTag() {
+        return tag;
+    }
     
     public Linea(int blockSize, int tag)
     {

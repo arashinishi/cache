@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Simulador {
 
     public static void main(String[] args) {
-        int blockSize=0, cacheSize=0, set=0;
+        int blockSize=0, cacheSize=0, numberOfSets=0;
         Boolean isWriteBack = true;
         Boolean isDirect = true;
         Boolean isFully = false;
@@ -40,7 +40,7 @@ public class Simulador {
                 }
                 
                 else if (args[i].compareTo("-fa") == 0){
-                    if (set>0){
+                    if (numberOfSets>0){
                         System.out.println("Error: The cache can't be FullyAssociative and SetAssociative at the same time");
                         System.exit(1);
                     }
@@ -53,7 +53,7 @@ public class Simulador {
                         System.out.println("Error: The cache can't be FullyAssociative and SetAssociative at the same time");
                         System.exit(1);
                     }
-                    set = Integer.parseInt(args[i+1]);
+                    numberOfSets = Integer.parseInt(args[i+1]);
                     i++;
                     isDirect = false;
                 }
@@ -73,6 +73,11 @@ public class Simulador {
                 
             }
             
+            if (numberOfSets>blockSize){
+                System.out.println("Error: The number of sets can't be higher that the block size");
+                System.exit(1);
+            }
+            
             //Lee el archivo desde los argumentos
             try{           
                 trace = new Scanner(new File(args[args.length-1]));
@@ -85,12 +90,13 @@ public class Simulador {
         }
         
         else{
-            System.out.println("Error: You need to provide arguments");
+            System.out.println("Error: You need to provide options and a file");
+            System.out.println("Usage: java Simulador <options> file.trace");
             System.exit(1);
         }
         
         //Crear cache
-        cache = new Cache(blockSize, cacheSize, isDirect, isFully, set, isSplit);
+        cache = new Cache(blockSize, cacheSize, isDirect, isFully, numberOfSets, isSplit);
         
         //Leer entradas
         String entrada = null;
@@ -126,10 +132,11 @@ public class Simulador {
             }
             
             String address = new BigInteger(hexaddress, 16).toString(2);
+            //Rellenar con ceros a la izquierda hasta dejar los 32 bits del address
             address = String.format("%32s", address).replace(" ", "0");
             
             //Hacer funcionar el cache aqui...
-            cache.write(t,address, isWriteBack, isAllocate);
+            cache.access(t, address, isWriteBack, isAllocate);
                      
             System.out.println("T : " + t + " Address : " + address);
         }
