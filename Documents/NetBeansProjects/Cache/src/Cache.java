@@ -1,15 +1,20 @@
-public class Cache {
+public class Cache {    
     private int indexSize;
     private int offsetSize;
     private int setSize;
     private int tagSize;
-    private Linea[] lineas;
-    private Linea[][] setLineas;
+    
+    //Tipo de cache
     private Boolean isDirect;
     private Boolean isSet;
     private Boolean isFully;
+    
     private Boolean isSplit;
-    //Si es split 
+    //Si no es split y no es set associative
+    private Linea[] lineas;
+    //Si no es split y es set associative
+    private Linea[][] setLineas;
+    //Si es split y no es set associative
     private Linea[] datos;
     private Linea[] instrucciones;
     //Si es split y set associative
@@ -118,11 +123,18 @@ public class Cache {
         }
         else if (this.isSet){
             //Obtener el set desde el address
-            int set = 0; //Calcular
+            String addressSet = address.substring(this.tagSize,(this.tagSize+this.setSize));            
+            int set = binToInt(addressSet);
             int posicionHit = search(address, this.setLineas[set]);
+            if (posicionHit == -1){
+                miss++;
+            }
         }
         else{
             int posicionHit = search(address, this.lineas);
+            if (posicionHit == -1){
+                miss++;
+            }
         }
         
     }
@@ -134,6 +146,16 @@ public class Cache {
                 return i;            
         }    
         return -1;
+    }
+
+    private int binToInt(String bin) {
+        int numero=0;        
+        char[] binChar = bin.toCharArray();
+        for(int i=0; i<binChar.length; i++){
+            int binNum = Integer.parseInt(Character.toString(binChar[i]));
+            numero += binNum*Math.pow(2, i);                        
+        }
+        return numero;
     }
     
     
